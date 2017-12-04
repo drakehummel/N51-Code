@@ -1,0 +1,7 @@
+all: assemblycompone.asm
+	nasm -f elf32 -g assemblycompone.asm
+	gcc -m32 -lc -o assemblycomponeexe assemblycompone.o
+	
+clean:
+	rm *.o assemblycomponeexe
+	

@@ -1,0 +1,28 @@
+;extern printf
+
+section .text
+
+global main
+
+main:
+
+        mov     edx,len   ; third argument: message length.
+        mov     ecx,msg   ; second argument: pointer to message to write.
+        mov     ebx,1     ; first argument: file handle (stdout).
+        mov     eax,4     ; system call number (sys_write).
+        int     0x80	  ; call kernel.
+
+		mov	ebx,0	  ; first syscall argument: exit code.
+        mov     eax,1     ; system call number (sys_exit).
+        int     0x80	  ; call kernel.
+
+        ;push dword msg2
+        ;call printf
+
+section .data
+
+msg     db      "Hello, world!",0xa,0x0      ; the string to print.
+len     equ     $ - msg                  ; length of the string.
+
+msg2     db      "Hello, sun!",0xa,0x0      ; the string to print.
+len2     equ     $ - msg2                  ; length of the string.

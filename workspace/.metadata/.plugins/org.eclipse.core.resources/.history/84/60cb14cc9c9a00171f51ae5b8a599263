@@ -1,0 +1,8 @@
+all: killProcess.asm
+	gcc -o killProcess.o killProcess.asm
+	objdump -d killProcess.o > finalKillProcess.o 
+	
+			
+clean:
+	rm *.o killProcess
+	

@@ -1,0 +1,15 @@
+02:54:22 **** Incremental Build of configuration Debug for project Comp 4 ****
+make all 
+Building file: ../Comp4/Comp4.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Comp4/Comp4.d" -MT"Comp4/Comp4.d" -o "Comp4/Comp4.o" "../Comp4/Comp4.c"
+Finished building: ../Comp4/Comp4.c
+ 
+Building target: Comp 4
+Invoking: GCC C Linker
+gcc  -o "Comp 4"  ./Comp4/Comp4.o   
+Finished building target: Comp 4
+ 
+
+02:54:22 Build Finished (took 212ms)
+

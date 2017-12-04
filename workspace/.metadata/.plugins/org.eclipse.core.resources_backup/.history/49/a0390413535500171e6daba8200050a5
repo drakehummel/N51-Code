@@ -1,0 +1,25 @@
+/*
+ * chatServer.h
+ *
+ *  Created on: Jun 19, 2017
+ *      Author: root
+ */
+
+#ifndef CHATSERVER_H_
+#define CHATSERVER_H_
+
+/
+
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include "utils.h"
+
+
+#endif /* CHATSERVER_H_ */

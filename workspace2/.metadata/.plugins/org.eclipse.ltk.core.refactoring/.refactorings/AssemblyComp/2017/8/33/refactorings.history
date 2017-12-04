@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;AssemblyComp/assemblycompone.asm&apos; to &apos;assemblycomp.asm&apos;" description="Rename resource &apos;assemblycompone.asm&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="assemblycompone.asm" name="assemblycomp.asm" stamp="1503076918561" updateReferences="true"/>
+</session>

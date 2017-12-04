@@ -1,0 +1,7 @@
+10:56:02 **** Incremental Build of configuration Default for project AssemblyComp ****
+make all 
+nasm -f elf32 -g assemblycomp.asm
+gcc -m32 -lc -o assemblycompexe assemblycomp.o
+
+10:56:02 Build Finished (took 132ms)
+

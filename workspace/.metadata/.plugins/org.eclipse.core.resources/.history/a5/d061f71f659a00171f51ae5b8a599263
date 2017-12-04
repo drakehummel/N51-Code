@@ -1,0 +1,28 @@
+#ifndef SERVER_H_
+#define SERVER_H_
+
+#define NUMENTRIES 10
+
+
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <sys/queue.h>
+#include <fcntl.h>
+
+#define BUFFER_SIZE 1000
+
+#include "utils.h"
+pthread_mutex_t lock;
+
+
+
+
+
+
+
+#endif

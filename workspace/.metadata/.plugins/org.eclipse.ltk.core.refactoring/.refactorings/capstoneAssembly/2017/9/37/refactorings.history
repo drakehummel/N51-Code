@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;killProcess.asm&apos; to &apos;capstoneAssembly&apos;" description="Move &apos;killProcess.asm&apos; to &apos;capstoneAssembly&apos;" destination="/capstoneAssembly" element1="/Captsone_Assembly/killProcess.asm" element2="/Captsone_Assembly/makefile" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="2" stamp="1505498910833" updateReferences="true"/>
+</session>

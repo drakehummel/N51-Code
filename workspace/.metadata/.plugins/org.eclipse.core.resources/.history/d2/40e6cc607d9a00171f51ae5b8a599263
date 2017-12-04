@@ -1,0 +1,24 @@
+#ifndef SERVER_H_
+#define SERVER_H_
+
+#define NUMENTRIES 10
+
+
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <sys/queue.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+
+#include "utils.h"
+
+#define BUFFER_SIZE 1000
+
+typedef int *(killProc)(int pid);
+
+#endif

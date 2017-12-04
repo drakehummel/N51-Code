@@ -1,0 +1,14 @@
+14:09:47 **** Incremental Build of configuration Debug for project C-Comp2 ****
+make all 
+Building target: C-Comp2
+Invoking: GCC C Linker
+gcc  -o "C-Comp2"  ./client.o ./server.o   
+./server.o: In function `main':
+/root/workspace/C-Comp2/Debug/../server.c:7: multiple definition of `main'
+./client.o:/root/workspace/C-Comp2/Debug/../client.c:16: first defined here
+makefile:29: recipe for target 'C-Comp2' failed
+collect2: error: ld returned 1 exit status
+make: *** [C-Comp2] Error 1
+
+14:09:47 Build Finished (took 219ms)
+

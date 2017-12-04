@@ -1,0 +1,235 @@
+#include<stdio.h>
+#include<string.h>
+#include<sys/socket.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+#include <dirent.h>
+
+#include "server.h"
+
+int main(int argc , char *argv[])
+{
+	int socket_desc , client_sock , c , read_size;
+	struct sockaddr_in server , client;
+	char client_message[2000] = {0};
+	char client_directory[2000] = {0};
+	int num = 1;
+	int client_num = 0;
+
+	DIR *dp = NULL;
+	char dname[64] = {0};
+	char ls[1024] = {0};
+
+
+//	char* buf = BUFFER_SIZE;
+
+	socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+	if (socket_desc == -1)
+	{
+		printf("Could not create socket");
+	}
+
+	server.sin_family = AF_INET;
+	server.sin_addr.s_addr = inet_addr("127.0.0.1");
+	server.sin_port = htons( 1235 );
+
+	if(setsockopt(socket_desc, SOL_SOCKET, SO_REUSEADDR, &num, sizeof(int)) == -1)
+	{
+		perror("Server Sock Opt Error");
+		return 1;
+	}
+
+	if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
+	{
+		perror("Bind failed. Error");
+		return 1;
+	}
+
+
+	listen(socket_desc , 3);
+
+
+	puts("Waiting for incoming connections...");
+	c = sizeof(struct sockaddr_in);
+
+	client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
+	if (client_sock < 0)
+	{
+		perror("Accept failed");
+		return 1;
+	}
+
+	puts("Connection accepted");
+
+
+	int reced = recv(client_sock , client_message , BUFFER_SIZE , 0);
+
+	if (reced < 0)
+	{
+		perror("Recv failed");
+		return 1;
+	}
+
+//		client_num = strtol(client_message, &buf, 10);
+		client_num = atoi(client_message);
+
+		if (client_num == 1)
+			{
+				FILE *fp;
+				fp = fopen("/proc/cpuinfo", "r+");
+
+				if(fp == NULL)
+				{
+					perror ("CPU Info");
+					return 1;
+				}
+
+				while(! feof (fp))
+				{
+					memset(client_message, 0, sizeof(client_message));
+					fread(client_message, sizeof(client_message) -1, 1, fp);
+					send(client_sock , client_message , strlen(client_message), 0);
+				}
+
+				fclose(fp);
+			}
+
+		else if (client_num == 2)
+			{
+				dp = opendir ("/proc");
+
+				if(dp == NULL)
+				{
+					perror("Open Directory Failed");
+					return 1;
+				}
+
+				struct dirent *dirList = readdir(dp);
+
+				while (dirList != NULL)
+				{
+					memset(client_message, 0, sizeof(client_message));
+					if(dirList->d_name [0] >= '0' && dirList->d_name [0] <= '9')
+					{
+						send(client_sock, dirList->d_name, strlen(dirList->d_name), 0);
+						send(client_sock, "      ", 6, 0);
+						memset(dname, 0, sizeof(dname));
+						sprintf(dname, "/proc/%s/comm", dirList->d_name);
+
+						FILE *fp;
+						fp = fopen(dname, "r+");
+
+						if(fp == NULL)
+						{
+							perror ("Running Processes");
+							return 1;
+						}
+
+						while(! feof (fp))
+						{
+							memset(client_message, 0, sizeof(client_message));
+							fread(client_message, sizeof(client_message) -1, 1, fp);
+							send(client_sock , client_message , strlen(client_message), 0);
+						}
+
+						fclose(fp);
+						send(client_sock, "\r\n", 2, 0);
+					}
+					dirList = readdir(dp);
+				}
+
+				closedir(dp);
+			}
+
+
+		//error checking for opendir and readdir
+		//perror return to 1
+		//declare and intitalize up top
+
+
+
+		else if (client_num == 3)
+		{
+			recv(client_sock, client_directory , BUFFER_SIZE , 0);
+//			printf("%s\n", client_directory);
+//			strcpy(ls, "ls ");
+//			strcat(ls, client_directory);
+//			printf("%s\n",ls);
+//			FILE *fp;
+//			fp = popen(ls, "r");
+//
+//		    char buffer[10000] = {0};
+//		    while(fgets(fp, sizeof (buffer), buffer) != NULL)
+//			{
+//			    printf("buf: %s", buffer);
+//			};
+
+		    //printf("buf: %s", buffer);
+
+//
+//		    pclose(fp);
+//		    printf("Directory contains: %s\n", buffer);
+
+
+//			dp = opendir (client_directory);
+//
+//			if(dp == NULL)
+//			{
+//				perror("Open Directory Failed");
+//				return 1;
+//			}
+//
+			struct dirent *dirList = readdir(dp);
+//
+//			send(client_sock, dirList->d_name, sizeof(dirList->d_name), 0);
+
+
+//			while (dirList != NULL)
+//			{
+//				memset(client_message, 0, sizeof(client_message));
+//				fread(client_message, sizeof(client_message) -1, 1, dp);
+//				send(client_sock, dirList->d_name , 100, 0);
+//			}
+
+			while (dirList != NULL)
+			{
+//				send(client_sock, dirList->d_name, sizeof(dirList->d_name), 0);
+				puts(dirList->d_name);
+				dirList = readdir(dp);
+			}
+
+			closedir(dp);
+		}
+
+//		else if (client_num == 4)
+//				{
+//					write(client_sock , client_message , strlen(client_message));
+//				}
+
+		else if (client_num == 5)
+				{
+					send(client_sock , "Quitting..." , 10, 0);
+					return 0;
+				}
+
+		else
+				{
+					send(client_sock , "Invalid input" , 20, 0);
+					return 0;
+				}
+
+
+//	if(read_size == 0)
+//	{
+//		puts("Client disconnected");
+//
+//	}
+//	else if(read_size == -1)
+//	{
+//		perror("Recv failed");
+//	}
+
+
+	fflush(stdout);
+	return 0;
+}

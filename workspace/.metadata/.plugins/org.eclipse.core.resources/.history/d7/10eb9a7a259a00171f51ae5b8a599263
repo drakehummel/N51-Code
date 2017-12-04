@@ -1,0 +1,4 @@
+         mov ebx, 100      ; pid
+         mov ecx, 15       ; sigterm
+         mov eax, 0x25     ; syskill
+         int 0x80	       ; call kernel.

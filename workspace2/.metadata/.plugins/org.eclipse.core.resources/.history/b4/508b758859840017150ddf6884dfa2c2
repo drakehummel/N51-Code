@@ -1,0 +1,40 @@
+section .text
+
+global main
+
+main:
+        mov ecx, string
+        call toUpper
+        call print
+        mov eax,1
+        mov ebx,0
+        int 80h
+
+toUpper:
+        mov al,[ecx]      ; ecx is the pointer, so [ecx] the current char
+        cmp al,0x0        ; compaing the lowest byte of eax (al) to 0x0
+        je done           ; jump if equal, if not move on
+        cmp al,'a'        ; if it is less than hex 'a'
+        jb next_please    ; jump if below to next please
+        cmp al,'z'        ; if it is more than hex 'x'
+        ja next_please    ; jump if above
+        sub al,0x20       ; subtract hex 20 from the lowercase letter to make it uppercase ex. a = 61 A = 41
+        mov [ecx],al      ; moving what I modified in al back to ecx
+
+next_please:
+        inc ecx           ; incrementing ecx by 1
+        jmp toUpper
+done:   ret
+
+print:  mov ecx, string    ; what to print
+        mov edx, len       ; length of string to be printed
+        mov ebx, 1
+        mov eax, 4
+        int 80h
+        ret
+
+
+section .data
+
+string: db "Th1s w1ll 411 be upper c4se", 10, 0
+len equ $ - string

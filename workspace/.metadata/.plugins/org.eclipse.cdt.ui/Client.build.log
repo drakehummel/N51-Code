@@ -1,0 +1,20 @@
+23:06:52 **** Build of configuration Debug for project Client ****
+make all 
+Building file: ../input.c
+Invoking: GCC C Compiler
+gcc -I"/root/workspace/Utils" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"input.d" -MT"input.d" -o "input.o" "../input.c"
+Finished building: ../input.c
+ 
+Building file: ../newClient.c
+Invoking: GCC C Compiler
+gcc -I"/root/workspace/Utils" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"newClient.d" -MT"newClient.d" -o "newClient.o" "../newClient.c"
+Finished building: ../newClient.c
+ 
+Building target: Client
+Invoking: GCC C Linker
+gcc -L"/root/workspace/Utils/Debug" -o "Client"  ./input.o ./newClient.o   -lUtils
+Finished building target: Client
+ 
+
+23:06:53 Build Finished (took 352ms)
+

@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define IPADDR "127.0.0.1"
+
+int main(int argv, char *argc[])
+{
+	int serverFd = 0;
+	int clientFd = 0;
+	struct sockaddr_in addr = {0};
+	socklen_t addrLen = sizeof(addr);
+	struct in_addr ipAddr = {0};
+	char *buf[1024] = {0};
+	int bytesRec = 0;
+
+
+	//parameters- ipv4, tcp, default
+	serverFd = socket(AF_INET, SOCK_STREAM, 0);
+	if(serverFd == -1)
+	{
+		perror("socket");
+		exit(EXIT_FAILURE);
+	}
+
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(1234);
+
+	if(inet_pton(AF_INET, IPADDR, &ipAddr) == -1)
+	{
+		perror("inet_ptons");
+		exit(EXIT_FAILURE);
+	}
+
+	addr.sin_addr = ipAddr;
+
+	if(bind(serverFd, (struct sockaddr *)(&addr), addrLen) == -1)
+	{
+		perror("bind");
+		exit(EXIT_FAILURE);
+	}
+
+	if(listen(serverFd, 10) == -1)
+	{
+		perror("listen");
+		exit(EXIT_FAILURE);
+	}
+
+	while(1)
+	{
+		clientFd = accept(serverFd, (struct sockaddr *)(&addr), &addrLen);
+		if(clientFd == -1)
+		{
+			perror("accept");
+			exit(EXIT_FAILURE);
+		}
+
+		do
+		{
+			bytesRec = recv(clientFd, buf, sizeof(buf), 0);
+			printf("%s\n", buf);
+		}while(bytesRec >0);
+
+		close(clientFd);
+
+	}
+
+
+
+
+
+
+	exit(EXIT_SUCCESS);
+}

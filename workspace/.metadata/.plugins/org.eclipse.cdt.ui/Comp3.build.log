@@ -1,0 +1,22 @@
+23:10:29 **** Incremental Build of configuration Debug for project Comp3 ****
+make all 
+Building file: ../chatServer.c
+Invoking: GCC C Compiler
+gcc -I"/root/workspace/Utils" -include"/root/workspace/Utils/utils.h" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"chatServer.d" -MT"chatServer.d" -o "chatServer.o" "../chatServer.c"
+../chatServer.c: In function ‘main’:
+../chatServer.c:11:2: error: unknown type name ‘socklent_t’
+  socklent_t addrLen = sizeof(struct sockaddr_in);
+  ^~~~~~~~~~
+../chatServer.c:83:59: warning: pointer targets in passing argument 3 of ‘accept’ differ in signedness [-Wpointer-sign]
+   clientFd = accept(serverFd, (struct sockaddr *)(&addr), &addrLen);
+                                                           ^
+In file included from ../chatServer.h:10:0,
+                 from ../chatServer.c:1:
+/usr/include/x86_64-linux-gnu/sys/socket.h:243:12: note: expected ‘socklen_t * restrict {aka unsigned int * restrict}’ but argument is of type ‘int *’
+ extern int accept (int __fd, __SOCKADDR_ARG __addr,
+            ^~~~~~
+subdir.mk:21: recipe for target 'chatServer.o' failed
+make: *** [chatServer.o] Error 1
+
+23:10:29 Build Finished (took 87ms)
+

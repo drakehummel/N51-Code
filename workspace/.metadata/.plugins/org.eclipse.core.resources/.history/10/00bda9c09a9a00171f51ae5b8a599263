@@ -1,0 +1,10 @@
+all: killProcess.asm
+
+	gcc -m32 -o killProcess.o killProcess.asm
+	objdump -d killProcess.o > finalKillProcess.o 
+	
+	ld -m elf_i386 -o killProcess killProcess.o
+		
+clean:
+	rm *.o killProcess
+	

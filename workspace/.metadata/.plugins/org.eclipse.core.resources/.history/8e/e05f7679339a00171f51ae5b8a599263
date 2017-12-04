@@ -1,0 +1,7 @@
+all: killProcess.asm
+	nasm -f elf32 -g killProcess.asm
+	gcc -m32 -lc -o killProcessexe killProcess.o
+	
+clean:
+	rm *.o killProcessexe
+	

@@ -1,0 +1,61 @@
+12:59:08 **** Incremental Build of configuration Default for project AssemblyComp ****
+make all 
+nasm -f elf32 -g assemblycomp.asm
+gcc -m32 -lc -o assemblycompexe assemblycomp.o
+14:50:57 **** Incremental Build of configuration Default for project AssemblyComp ****
+make all 
+nasm -f elf32 -g assemblycomp.asm
+gcc -m32 -lc -o assemblycompexe assemblycomp.o
+10:55:11 **** Incremental Build of configuration Debug for project Assembly1 ****
+make all 
+Building file: ../Assembly1.asm
+Invoking: GCC Assembler
+as  -o "Assembly1.o" "../Assembly1.asm"
+../Assembly1.asm: Assembler messages:
+../Assembly1.asm:1: Error: no such instruction: `bits 32'
+../Assembly1.asm:3: Error: no such instruction: `section .text'
+../Assembly1.asm:5: Error: no such instruction: `global _start'
+../Assembly1.asm:9: Error: too many memory references for `mov'
+../Assembly1.asm:9: Error: no such instruction: `third argument:message length.'
+../Assembly1.asm:10: Error: too many memory references for `mov'
+../Assembly1.asm:10: Error: no such instruction: `second argument:pointer to message to write.'
+../Assembly1.asm:11: Error: too many memory references for `mov'
+../Assembly1.asm:11: Error: no such instruction: `first argument:file handle (stdout).'
+../Assembly1.asm:12: Error: too many memory references for `mov'
+../Assembly1.asm:12: Error: no such instruction: `system call number (sys_write).'
+subdir.mk:15: recipe for target 'Assembly1.o' failed
+../Assembly1.asm:13: Error: operand size mismatch for `int'
+../Assembly1.asm:15: Error: number of operands mismatch for `and'
+../Assembly1.asm:17: Error: too many memory references for `mov'
+../Assembly1.asm:17: Error: no such instruction: `first syscall argument:exit code.'
+../Assembly1.asm:18: Error: too many memory references for `mov'
+../Assembly1.asm:18: Error: no such instruction: `system call number (sys_exit).'
+../Assembly1.asm:19: Error: operand size mismatch for `int'
+../Assembly1.asm:21: Error: no such instruction: `section .data'
+../Assembly1.asm:23: Error: no such instruction: `msg db "Hello, world!",0xa'
+../Assembly1.asm:23: Error: no such instruction: `the string to print.'
+../Assembly1.asm:24: Error: no such instruction: `len equ $ - msg'
+../Assembly1.asm:24: Error: no such instruction: `length of the string.'
+make: *** [Assembly1.o] Error 1
+10:55:11 **** Build of configuration Default for project AssemblyComp ****
+make all 
+nasm -f elf32 -g assemblycomp.asm
+gcc -m32 -lc -o assemblycompexe assemblycomp.o
+/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib32/Scrt1.o: In function `_start':
+(.text+0x28): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+makefile:2: recipe for target 'all' failed
+make: *** [all] Error 1
+10:55:46 **** Incremental Build of configuration Default for project AssemblyComp ****
+make all 
+nasm -f elf32 -g assemblycomp.asm
+/usr/lib/gcc/x86_64-linux-gnu/6/../../../../lib32/Scrt1.o: In function `_start':
+gcc -m32 -lc -o assemblycompexe assemblycomp.o
+makefile:2: recipe for target 'all' failed
+(.text+0x28): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+make: *** [all] Error 1
+10:56:02 **** Incremental Build of configuration Default for project AssemblyComp ****
+make all 
+nasm -f elf32 -g assemblycomp.asm
+gcc -m32 -lc -o assemblycompexe assemblycomp.o

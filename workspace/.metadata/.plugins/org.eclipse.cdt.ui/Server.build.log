@@ -1,0 +1,15 @@
+23:06:52 **** Build of configuration Debug for project Server ****
+make all 
+Building file: ../newServer.c
+Invoking: GCC C Compiler
+gcc -I"/root/workspace/Utils" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"newServer.d" -MT"newServer.d" -o "newServer.o" "../newServer.c"
+Finished building: ../newServer.c
+ 
+Building target: Server
+Invoking: GCC C Linker
+gcc -L"/root/workspace/Utils/Debug" -o "Server"  ./newServer.o   -lUtils
+Finished building target: Server
+ 
+
+23:06:52 Build Finished (took 248ms)
+

@@ -1,0 +1,159 @@
+#include "chatServer.h"
+
+
+int main(int argc, char *argv[])
+{
+	char* ip = argv[1];
+	char* port = argv[2];
+	int serverFd = 0;
+	int clientFd = 0;
+	struct sockaddr_in addr = {0};
+	socklen_t addrLen = sizeof(struct sockaddr_in);
+	struct in_addr ipAddr = {0};
+	char *badChar = NULL;
+
+	int num = 1;
+
+	int bytesRec = 0;
+	int size = 100;
+	char* buf = calloc(sizeof(char), size);
+	char* wholeBuf = calloc(sizeof(char), size);
+	char* tempBuf = NULL;
+	int readSize = size;
+
+
+//////SETTING UP SOCKET//////
+
+
+	serverFd = socket(AF_INET, SOCK_STREAM, 0);					//parameters- ipv4, tcp, default
+	if(serverFd == -1)
+	{
+		perror("Socket Error");
+		exit(EXIT_FAILURE);
+	}
+
+
+/////CALLING PORT VALIDATOR//////
+
+	if (inputValInt(port) == -1)
+	{
+		perror("Invlaid Port");
+		exit(EXIT_FAILURE);
+	}
+
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(strtol(port, &badChar, 10));
+
+	if(inet_pton(AF_INET, ip, &ipAddr) == -1)
+	{
+		perror("Invalid IP Address");
+		exit(EXIT_FAILURE);
+	}
+
+	addr.sin_addr = ipAddr;
+
+
+//////ALLOWS THE IP TO BE REUSED/////
+
+	if(setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR, &num, sizeof(int)) == -1)
+	{
+		perror("Server Sock Opt Error");
+		exit(EXIT_FAILURE);
+	}
+
+
+
+	if(bind(serverFd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+	{
+		perror("Bind Error");
+		exit(EXIT_FAILURE);
+	}
+
+	if(listen(serverFd, 10) == -1)
+	{
+		perror("listen Error");
+		exit(EXIT_FAILURE);
+	}
+
+//////COMMS START HERE//////
+
+	while(1)
+	{
+
+		clientFd = accept(serverFd, (struct sockaddr *)(&addr), &addrLen);
+		if(clientFd == -1)
+		{
+			perror("Accept Error");
+			exit(EXIT_FAILURE);
+		}
+
+		do
+		{
+			buf = calloc(sizeof(char), readSize);
+			memset(wholeBuf, 0, size);
+
+
+///////REALLOC CODE///////
+
+			do
+				{
+					bytesRec = recv(clientFd, buf, readSize, 0);
+
+					if(bytesRec == 0)
+					{
+						break;
+					}
+
+					if (strchr(buf, '\n') == NULL)
+					{
+						size += readSize;								//incrementing size by 500 each time
+						tempBuf = realloc(wholeBuf, size);				//reallocating the wholeMessage block of memory to the new size
+
+						if(tempBuf == NULL)
+						{
+							free(wholeBuf);
+							wholeBuf = NULL;
+							free(buf);
+							perror("Realloc Error");
+							exit(EXIT_FAILURE);
+						}
+
+						else
+						{
+							wholeBuf = tempBuf;							//this assigns the reallocation to wholeMessage
+							tempBuf = NULL;
+						}
+
+					}
+
+
+					strncat(wholeBuf, buf, readSize);					//concatenating message to the end of wholeMessage
+
+				}while ((wholeBuf)[strlen(wholeBuf) - 1] != '\n');		//all while the new wholeMessage's last character isnt a newline
+				free(buf);
+
+
+/////SENDING BACK TO CLIENT///////
+
+			if(bytesRec == 0)
+			{
+				break;
+			}
+
+			printf("%s\n", wholeBuf);
+
+
+			if (send(clientFd, wholeBuf, strlen(wholeBuf), 0) == -1)
+			{
+				perror("Send Error");
+				exit(EXIT_FAILURE);
+			}
+
+		}while(bytesRec > 0);
+
+	}
+
+	close(clientFd);
+	exit(EXIT_SUCCESS);
+}
+

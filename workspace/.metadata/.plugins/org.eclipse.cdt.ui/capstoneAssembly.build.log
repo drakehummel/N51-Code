@@ -1,0 +1,6 @@
+20:04:31 **** Incremental Build of configuration Default for project capstoneAssembly ****
+make all 
+nasm killProcess.asm -o killProcess.o
+
+20:04:31 Build Finished (took 111ms)
+

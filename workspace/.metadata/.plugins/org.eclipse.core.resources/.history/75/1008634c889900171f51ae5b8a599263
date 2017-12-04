@@ -1,0 +1,129 @@
+#include<stdio.h>
+#include<string.h>
+#include<sys/socket.h>
+#include<arpa/inet.h>
+#include<unistd.h>
+
+#include "server.h"
+
+int main(int argc , char *argv[])
+{
+	int socket_desc , client_sock , c , read_size;
+	struct sockaddr_in server , client;
+	char client_message[2000];
+	int num = 1;
+	long client_num = 0;
+	char* buf = {0};
+	char *fileName = NULL;
+
+//	char* buf = BUFFER_SIZE;
+
+	socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+	if (socket_desc == -1)
+	{
+		printf("Could not create socket");
+	}
+
+	server.sin_family = AF_INET;
+	server.sin_addr.s_addr = inet_addr("127.0.0.1");
+	server.sin_port = htons( 1234 );
+
+	if(setsockopt(socket_desc, SOL_SOCKET, SO_REUSEADDR, &num, sizeof(int)) == -1)
+	{
+		perror("Server Sock Opt Error");
+		return 1;
+	}
+
+	if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
+	{
+		perror("Bind failed. Error");
+		return 1;
+	}
+
+
+	listen(socket_desc , 3);
+
+
+	puts("Waiting for incoming connections...");
+	c = sizeof(struct sockaddr_in);
+
+	client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
+	if (client_sock < 0)
+	{
+		perror("Accept failed");
+		return 1;
+	}
+	puts("Connection accepted");
+
+	puts("ca");
+					//////Receive a message from client
+	recv(client_sock , client_message , BUFFER_SIZE , 0);
+
+	client_num = strtol(client_message, &buf, 10);
+	puts("%s", client_message);
+
+					//////Send the message back to client
+	while(client_num > 0 && client_num < 2)
+	{
+		if (client_num == 1)
+			{
+				puts("top of one");
+				FILE *fp;
+				fp = fopen ("/proc/cpuinfo ", "r+");
+
+				while(! feof (fp))
+				{
+					puts("middle of one");
+					memset(client_message, 0, sizeof(client_message));
+					fread(client_message, sizeof(client_message) -1, 1, fp);
+					send(client_sock , client_message , strlen(client_message), 0);
+				}
+			}
+
+		else if (client_num == 2)
+			{
+				FILE *fp;
+				fp = fopen ("/proc", "r+");
+
+				while(! feof (fp))
+				{
+					memset(client_message, 0, sizeof(client_message));
+					fread(client_message, sizeof(client_message) -1, 1, fp);
+					send(client_sock , client_message , strlen(client_message), 0);
+				}
+			}
+
+		else if (client_num == 3)
+				{
+					fgets (fileName, 100, stdin);
+					FILE *fp;
+					fp = fopen ("fileName ", "r+");
+
+					write(client_sock , client_message , strlen(client_message));
+				}
+
+		else if (client_num == 4)
+				{
+					write(client_sock , client_message , strlen(client_message));
+				}
+
+		else
+				{
+					write(client_sock , client_message , strlen(client_message));
+				}
+
+	}
+
+
+	if(read_size == 0)
+	{
+		puts("Client disconnected");
+		fflush(stdout);
+	}
+	else if(read_size == -1)
+	{
+		perror("Recv failed");
+	}
+
+	return 0;
+}

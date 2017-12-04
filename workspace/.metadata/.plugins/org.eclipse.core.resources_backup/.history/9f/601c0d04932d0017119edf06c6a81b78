@@ -1,0 +1,18 @@
+/*
+ * temp.c
+ *
+ *  Created on: Apr 30, 2017
+ *      Author: root
+ */
+
+#include "temp.h"
+
+int main(int argc, char *argv[])
+{
+	int s = 0;
+	char *buffer[BUFFERSIZE] = {0};
+	s = square[5];
+
+	return 0;
+
+}
